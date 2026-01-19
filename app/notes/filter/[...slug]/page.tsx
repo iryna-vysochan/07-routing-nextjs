@@ -8,16 +8,17 @@ import NotesClient from "./Notes.client";
 const PER_PAGE = 12;
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug?: string[];
-  };
+  }>;
 }
 
 export default async function FilteredNotesPage({ params }: PageProps) {
+  const { slug } = await params;
+
   const queryClient = new QueryClient();
 
-  const selectedTag = params.slug?.[0];
-
+  const selectedTag = slug?.[0];
   const tag = selectedTag === "all" ? undefined : selectedTag;
 
   await queryClient.prefetchQuery({
